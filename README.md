@@ -84,6 +84,11 @@ the table**, **carry** an envelope or a single card to a cabinet or a room objec
 a place on the wall map, **type** on the typewriter, **set** the clock, **pick up** a card
 found in the room.
 
+A fresh night opens just inside the door, looking down the room: downstairs the front door
+slams and the key turns as J.J.V. leaves, and then you walk to the table, where his note
+is on the spike. Going anywhere first (a tab, a click) skips the walk; a resumed night
+starts in the middle of the room.
+
 - **Walking about.** Drag to look round; W A S D (or the arrows) or a click on the floor
   to walk, Shift to walk briskly. Click a thing to step up to it (the walk finds its way
   round the furniture; a click on the way hurries it); drawers can be clicked once you

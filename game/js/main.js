@@ -260,8 +260,8 @@ async function boot() {
     }
     $('title').classList.add('gone');
     setTimeout(() => ($('title').hidden = true), 1700);
-    // a fresh night starts at the table, with the collector just gone
-    if (fresh) rails.go('table', { instant: true });
+    // a fresh night opens just inside the door, the collector just gone, looking down the room
+    if (fresh) rails.go('entry', { instant: true });
     ui.showHud(true);
     game.start();
     await ui.fade(0, 2600);
@@ -269,6 +269,10 @@ async function boot() {
       // downstairs, the front door: he has gone home, with the key
       setTimeout(() => sound.doorSlam([0, 0.6, ROOM.z1 + 6]), 300);
       setTimeout(() => sound.keyTurn([0, 0.6, ROOM.z1 + 6]), 1700);
+      // then you go to the table, unhurried, unless you have gone somewhere already
+      setTimeout(() => {
+        if (rails.current === 'entry' && !rails.moving && !game.finished) rails.go('table', { duration: 6.5 });
+      }, 2400);
     } else {
       rails.go('room');
     }
