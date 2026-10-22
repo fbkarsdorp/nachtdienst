@@ -254,6 +254,8 @@ body.ending #note, body.ending #cardbar, body.ending #choice, body.ending #toolt
   #held { bottom: 116px; }
   #subtitle { bottom: 178px; }
   #sound-toggle { opacity: .8; }
+  /* the one button that needs its word: trying a half of a torn card */
+  #cardbar [data-act="join"] .lbl { display: inline; }
   /* typing: the phone's keyboard is up, and the places would sit on the typewriter's keys */
   body:has(#keytrap:focus) #nav { display: none; }
 }

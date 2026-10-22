@@ -504,6 +504,7 @@ export class Game {
         if (r?.card && this.inBay.includes(r.card.key)) card = r.card.key;
       }
       this.drag = { x: e.clientX, y: e.clientY, moved: false, card };
+      this.pointerType = e.pointerType;
       // a finger has not been anywhere since it last let go
       this.pointerPx = [e.clientX, e.clientY];
     });
@@ -701,7 +702,13 @@ export class Game {
         }
         const url = this.reading.mode === 'single' && r.card.linkAt(r.hit);
         if (url) return void window.open(url, '_blank', 'noopener');
-        if (this.reading.from === 'box') return this.tryHalf(key);
+        if (this.reading.from === 'box') {
+          // a finger cannot hover to read a half: a tap holds it up under the top half,
+          // and a tap on the half held up tries it
+          const i = this.reading.list.indexOf(key);
+          if (this.pointerType !== 'mouse' && i > 0 && i !== this.fanClose) return this.closeHalf(i);
+          return this.tryHalf(key);
+        }
         if (this.reading.mode === 'compare') {
           this.reading.mode = 'single';
           this.reading.index = this.liftedCards().indexOf(r.card);
@@ -2043,6 +2050,7 @@ export class Game {
       c.place(from, new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 2, 0, 0)));
     }
     this.fanHover = null;
+    this.fanClose = null;
     this.reading = { mode: 'fan', list: [top, ...keys], index: 0, from: 'box' };
     this.rails.parallax = false;
     this.layoutReading();
@@ -2054,6 +2062,18 @@ export class Game {
     const q = this.rails.baseQuat.clone();
     const { vw, vh } = this.viewFrame();
     const W = CARD_SIZE.w, H = CARD_SIZE.h / 2, gap = 0.01, sep = 0.03;
+    const fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(q);
+    const up = new THREE.Vector3(0, 1, 0).applyQuaternion(q);
+    // held up (closeHalf): the top half and the half under it, as wide as the screen allows;
+    // the other halves lie in their box meanwhile
+    if (this.fanClose != null) {
+      if (i !== 0 && i !== this.fanClose) {
+        return { pos: this.cardBox.group.position.clone().add(new THREE.Vector3(0, 0.03 + i * 0.0008, 0)), q: Q_FLAT(0) };
+      }
+      const d = Math.max(W / (0.94 * vw), (2 * H + 0.004) / (0.62 * vh));
+      const oy = (i === 0 ? 1 : -1) * (H / 2 + 0.002) + vh * d * 0.04;
+      return { pos: this.rails.basePos.clone().add(fwd.multiplyScalar(d)).add(up.multiplyScalar(oy)), q };
+    }
     const cols = 3, rows = 1 + Math.ceil((n - 1) / cols);
     const tw = cols * W + (cols - 1) * gap, th = rows * H + (rows - 1) * gap + sep;
     let d = Math.max(tw / (0.94 * vw), th / (0.8 * vh));
@@ -2071,17 +2091,32 @@ export class Game {
       const room = 0.48 * vw * d - W / 2;
       ox2 = THREE.MathUtils.clamp(ox2, -Math.max(0, room), Math.max(0, room));
     }
-    const fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(q);
     const right = new THREE.Vector3(1, 0, 0).applyQuaternion(q);
-    const up = new THREE.Vector3(0, 1, 0).applyQuaternion(q);
     return { pos: this.rails.basePos.clone().add(fwd.multiplyScalar(d)).add(right.multiplyScalar(ox2)).add(up.multiplyScalar(oy)), q };
+  }
+
+  // Hold the i-th half up under the top half, large, the others back in the box (null: the
+  // fan again). For a finger, which cannot hover over the fan to read.
+  closeHalf(i) {
+    const R = this.reading;
+    if (!R || R.mode !== 'fan' || this.trying) return;
+    this.fanClose = i;
+    this.fanHover = null;
+    R.list.forEach((k, j) => {
+      const c = this.cards.get(k);
+      if (!c) return;
+      const p = this.fanPose(j, R.list.length);
+      c.moveTo(p.pos, p.q, 0.4);
+    });
+    this.sound.paper(null, 0.12);
+    this.refreshCardbar();
   }
 
   setFanHover(key) {
     const R = this.reading;
     const i = key ? R.list.indexOf(key) : -1;
     const idx = i > 0 ? i : null;
-    if (idx === this.fanHover || this.trying) return;
+    if (idx === this.fanHover || this.trying || this.fanClose != null) return;
     const was = this.fanHover;
     this.fanHover = idx;
     for (const j of [was, idx]) {
@@ -2130,6 +2165,11 @@ export class Game {
         this.sound.locked([TABLE.x, TABLE.y, TABLE.z]);
         this.ui.note(this.F.nee, { ms: 1400 });
         setTimeout(() => {
+          // held up, all go back into the fan
+          if (this.fanClose != null) {
+            this.trying = false;
+            return this.closeHalf(null);
+          }
           const back = this.fanPose(i, R.list.length);
           card.moveTo(back.pos, back.q, 0.3, { onDone: () => (this.trying = false) });
         }, 250);
@@ -2217,6 +2257,11 @@ export class Game {
     const table = R.from === 'table' && list.length > 1;
     const bay = R.from === 'bay';
     const own = cur && this.env?.open && this.cardInfo.get(cur.key)?.e === this.env.e;
+    // the box of halves: by finger, one held up to read, the others to go through
+    if (R.mode === 'fan') {
+      const close = this.fanClose != null;
+      return this.ui.showCardbar(true, { nav: close || null, join: close || null, compare: close ? { label: 'Alle stukken' } : null });
+    }
     this.ui.showCardbar(true, {
       flip: cur && cur.key !== NOTE ? { flipped: !!cur.flipped } : null,
       compare: table ? { compare: R.mode === 'compare' } : null,
@@ -2253,6 +2298,17 @@ export class Game {
       this.refreshCardbar();
       return;
     }
+    if (R.mode === 'fan') {
+      const n = list.length;
+      if (act === 'join' && this.fanClose != null) return this.tryHalf(R.list[this.fanClose]);
+      if (act === 'compare') return this.closeHalf(null);
+      if ((act === 'next' || act === 'prev') && this.fanClose != null && n > 2) {
+        // through the halves only, never to the top one
+        const k = this.fanClose - 1, m = n - 1;
+        return this.closeHalf(1 + ((k + (act === 'next' ? 1 : m - 1)) % m));
+      }
+      return;
+    }
     if (act === 'next' || act === 'prev') {
       if (R.mode !== 'single' || list.length < 2 || !['table', 'bay'].includes(R.from) || R.switching) return;
       // one card back in its place first, then the next taken up
@@ -2282,6 +2338,7 @@ export class Game {
     const R = this.reading;
     if (!R) return;
     this.reading = null;
+    this.fanClose = null;
     for (const card of R.list.map((k) => this.cards.get(k)).filter(Boolean)) {
       card.setReading(false);
       if (R.from !== 'loose') card.flipped = false;

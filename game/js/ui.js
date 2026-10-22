@@ -71,20 +71,21 @@ export class UI {
 
 
   // Buttons under a lifted card. Each option is null (hidden) or its state.
-  showCardbar(on, { flip = null, compare = null, nav = null, take = null, lay = null, stand = null, down = 'Terugleggen' } = {}) {
+  showCardbar(on, { flip = null, compare = null, nav = null, take = null, lay = null, stand = null, join = null, down = 'Terugleggen' } = {}) {
     this.cardbar.hidden = !on;
     if (!on) return;
     const b = (act) => this.cardbar.querySelector(`[data-act="${act}"]`);
     b('take').hidden = !take;
     b('lay').hidden = !lay;
     b('stand').hidden = !stand;
+    b('join').hidden = !join;
     b('down').querySelector('.lbl').textContent = down;
     b('flip').hidden = !flip;
     if (flip) b('flip').querySelector('.lbl').textContent = flip.flipped ? 'Voorkant' : 'Achterkant';
     b('compare').hidden = !compare;
     if (compare) {
       b('compare').querySelector('.ico').textContent = compare.compare ? '▭' : '⊞';
-      b('compare').querySelector('.lbl').textContent = compare.compare ? 'Eén kaart' : 'Naast elkaar';
+      b('compare').querySelector('.lbl').textContent = compare.label || (compare.compare ? 'Eén kaart' : 'Naast elkaar');
     }
     b('prev').hidden = b('next').hidden = !nav;
   }
