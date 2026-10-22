@@ -16,7 +16,7 @@
 //                breath shows when you stand at it
 import * as THREE from 'three';
 import { CAB, FAMILY_ORDER } from './room.js';
-import { makeCanvas, canvasTexture } from './textures.js';
+import { makeCanvas, canvasTexture, fixedTexture } from './textures.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 // the drawer fronts stand this far proud of their drawer's origin (measured on the model)
@@ -358,7 +358,7 @@ export class CabinetLeaks {
     this.clawShown = [0, 0, 0];
     this.claws = clawLayers().map((c, i) => {
       const mat = new THREE.MeshStandardMaterial({
-        map: canvasTexture(c), emissive: 0xffffff, emissiveMap: null, roughness: 0.9, opacity: 0,
+        map: fixedTexture(c), emissive: 0xffffff, emissiveMap: null, roughness: 0.9, opacity: 0,
         transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -0.5, polygonOffsetUnits: -1 - i,
       });
       mat.emissiveMap = mat.map;

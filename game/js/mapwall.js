@@ -1,7 +1,7 @@
 // The wall map of the Netherlands: drawn once on aged paper from the pipeline's
 // geography, then pins go in — the card's place, an answer, a token.
 import * as THREE from 'three';
-import { makeCanvas, canvasTexture, paperCanvas } from './textures.js';
+import { makeCanvas, canvasTexture, fixedTexture, paperCanvas } from './textures.js';
 import { haversine } from './bundle.js';
 import { ROOM } from './room.js';
 
@@ -316,7 +316,7 @@ export class WallMap {
     this.group = new THREE.Group();
     this.group.position.set(MAP.cx, MAP.y, MAP.z);
     this.group.rotation.y = -Math.PI / 2;
-    const tex = canvasTexture(drawMap(geo));
+    const tex = fixedTexture(drawMap(geo));
     this.plane = new THREE.Mesh(new THREE.PlaneGeometry(MAP.w, MAP.h), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.9 }));
     this.plane.receiveShadow = true;
     this.group.add(this.plane);

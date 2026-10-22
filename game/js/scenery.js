@@ -8,6 +8,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { lighten } from './textures.js';
 
 const DRACO = 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/libs/draco/gltf/';
 
@@ -145,6 +146,7 @@ export async function loadScenery(renderer) {
         if (t) {
           t.wrapS = t.wrapT = THREE.RepeatWrapping;
           t.anisotropy = aniso;
+          lighten(t);
         }
         return t;
       }));
@@ -252,6 +254,17 @@ export async function loadScenery(renderer) {
     o.receiveShadow = !isBaked;
     // the lamp's own parts sit around its light: they must not shadow it
     if (/^lamp_/.test(src.name || o.name)) o.castShadow = false;
+  });
+
+  // the models' own textures at half size on a touch screen; the light (lightmaps) stays whole
+  const done = new Set(Object.values(lm).flatMap((L) => [L.lamp, L.amb]));
+  gltf.scene.traverse((o) => {
+    for (const m of o.material ? [o.material].flat() : []) {
+      for (const k of ['map', 'normalMap', 'roughnessMap', 'metalnessMap', 'emissiveMap', 'aoMap', 'alphaMap', 'bumpMap']) {
+        const t = m[k];
+        if (t && !done.has(t)) { done.add(t); lighten(t); }
+      }
+    }
   });
 
   bindBooks(byName);

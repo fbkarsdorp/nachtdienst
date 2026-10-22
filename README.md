@@ -58,8 +58,12 @@ the view's width instead, 58° across, and the picture sits a little high, so th
 the bottom holds the places and card buttons; on a touch screen held upright these are
 larger (`fitView` in `game/js/game.js`, the last block of `game/css/style.css`). On a
 touch screen the cards' faces are kept at the size a phone can show (about half each way,
-`SHARP` in `game/js/cards3d.js`) and the paper grain is made at half size: a torn card's
-dozen halves at full size took more memory than an iPhone gives a page.
+`SHARP` in `game/js/cards3d.js`) and the paper grain is made at half size; the room's
+textures, the scans, the drawer labels, the wall map and the claw marks go to the graphics
+card at half size (a quarter of the memory), and a texture that is never redrawn lets go of
+its picture once it is there (`LITE`, `lighten`, `fixed` and `release` in
+`game/js/textures.js`). The lightmaps stay whole. At full size the room took more memory
+than an iPhone gives a page.
 
 Online it is served from GitHub Pages: every push to `main` publishes `game/` as it is
 (`.github/workflows/pages.yml`). The raw dumps in `data/` and the downloaded sources in

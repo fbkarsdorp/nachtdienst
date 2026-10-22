@@ -20,6 +20,7 @@ import { TABLE, FAMILY_ORDER, ROOM, CAB, CABINET_Z, LABEL_GLOW, CLOSED, LAMP_POS
 import { drawFinal } from './cardface.js';
 import { KIT_POS, BAY_POS, BAY_DEPTH } from './tablekit.js';
 import { Archive } from './archive.js';
+import { fixed, release } from './textures.js';
 
 // cards lie on the leather, which stands 2 mm proud of the top, above the shadow catcher
 const LIE = 0.0032;
@@ -280,7 +281,7 @@ export class Game {
       ctx.stroke();
       ctx.restore();
     }
-    const tex = new THREE.CanvasTexture(c);
+    const tex = release(new THREE.CanvasTexture(fixed(c)));
     tex.colorSpace = THREE.SRGBColorSpace;
     tex.anisotropy = 8;
     u.label.material.map?.dispose();

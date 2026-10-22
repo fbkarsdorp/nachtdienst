@@ -4,7 +4,7 @@
 // pinned to the notice board by the door, which is only the office's own business.
 import * as THREE from 'three';
 import { ROOM } from './room.js';
-import { canvasTexture, paperCanvas, makeNoise } from './textures.js';
+import { canvasTexture, paperCanvas, makeNoise, lighten } from './textures.js';
 import { MONTHS } from './game.js';
 
 // where each hangs: the wall, its place along it, and what it shows
@@ -40,6 +40,7 @@ export function buildPrints(scene, M) {
     sheet.receiveShadow = true;
     g.add(sheet);
     loader.load(`models/prints/${s.file}`, (tex) => {
+      lighten(tex);
       tex.colorSpace = THREE.SRGBColorSpace;
       tex.anisotropy = 8;
       mat.map = tex;

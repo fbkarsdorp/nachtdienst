@@ -30,6 +30,40 @@ function makeNoise(seed = 1) {
   return noise;
 }
 
+// A touch screen (a phone, a tablet) shows things small and gives a page little memory:
+// there textures go to the graphics card at half size, a quarter of the memory.
+export const LITE = typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches;
+
+// a loaded texture at half size on a touch screen (before it is first drawn); small ones stay
+export function lighten(t, min = 256) {
+  const im = t?.image;
+  if (!LITE || !im || t.userData.lite || Math.max(im.width, im.height) <= min) return t;
+  t.userData.lite = true;
+  t.image = halfCopy(im);
+  im.close?.();
+  t.needsUpdate = true;
+  return release(t);
+}
+
+// On a touch screen a texture that is never redrawn lets go of its picture once it is on
+// the graphics card: otherwise the page holds every texture twice.
+export function release(t) {
+  if (LITE) t.onUpdate = forget;
+  return t;
+}
+function forget(t) {
+  t.onUpdate = null;
+  if (t.image instanceof HTMLCanvasElement) t.image.width = t.image.height = 1;
+  else t.image = { width: t.image.width, height: t.image.height };
+}
+function halfCopy(im) {
+  const c = canvas(Math.max(1, Math.round(im.width / 2)), Math.max(1, Math.round(im.height / 2)));
+  const ctx = c.getContext('2d');
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(im, 0, 0, c.width, c.height);
+  return c;
+}
+
 function canvas(w, h) {
   const c = document.createElement('canvas');
   c.width = w; c.height = h;
@@ -61,7 +95,7 @@ export function paperBase(ctx, w, h, { tone = [236, 227, 207], age = 0.5, seed =
 // touch screen it is made at half size and drawn larger: things are seen smaller there,
 // and the full-size sheets would take a phone's memory.
 const grainCache = new Map();
-const GRAIN = typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches ? 0.5 : 1;
+const GRAIN = LITE ? 0.5 : 1;
 function grain(w, h, seed, age) {
   const key = `${w}x${h}:${seed}:${age}`;
   if (!grainCache.has(key)) {
@@ -91,6 +125,12 @@ export function paperCanvas(w, h, opts = {}) {
 }
 
 export function makeCanvas(w, h) { return canvas(w, h); }
+// a canvas drawn once and never again, to be a texture: at half size on a touch screen
+export function fixed(c) {
+  return LITE && Math.max(c.width, c.height) > 256 ? halfCopy(c) : c;
+}
+export function fixedTexture(c, srgb = true) { return release(canvasTexture(fixed(c), srgb)); }
+
 export function canvasTexture(c, srgb = true) {
   const t = new THREE.CanvasTexture(c);
   t.anisotropy = maxAniso;
@@ -104,7 +144,7 @@ export function textureSet(name) {
   if (!sets.has(name)) {
     const loader = new THREE.TextureLoader();
     const load = (kind, srgb) => {
-      const t = loader.load(`models/tex/${name}_${kind}.webp`);
+      const t = loader.load(`models/tex/${name}_${kind}.webp`, lighten);
       t.wrapS = t.wrapT = THREE.RepeatWrapping;
       t.anisotropy = maxAniso;
       t.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace;

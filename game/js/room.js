@@ -5,7 +5,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { Reflector } from 'three/addons/objects/Reflector.js';
-import { textureSet, boxUVs, makeCanvas, canvasTexture, paperCanvas } from './textures.js';
+import { textureSet, boxUVs, makeCanvas, canvasTexture, fixedTexture, paperCanvas } from './textures.js';
 
 export const ROOM = { x0: -2.7, x1: 2.7, z0: -7.5, z1: 8.0, h: 3.3 };
 export const FAMILY_ORDER = ['voortekenen', 'wittewieven', 'weerwolven', 'spoken', 'duivel'];
@@ -73,7 +73,7 @@ function labelCanvas(lines, { red = false, register = false, w = 512, h = 168 } 
 // Paper labels pick up what little light there is, so they read where the wood goes dark.
 export const LABEL_GLOW = 0x3a3428;
 function labelMaterial(canvas) {
-  const map = canvasTexture(canvas);
+  const map = fixedTexture(canvas);
   return new THREE.MeshStandardMaterial({ map, emissiveMap: map, emissive: LABEL_GLOW, roughness: 0.9 });
 }
 
