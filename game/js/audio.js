@@ -64,17 +64,18 @@ export class Sound {
     this.listenerPos = pos;
     if (!this.ctx) return;
     const l = this.ctx.listener;
-    const t = this.ctx.currentTime;
+    // set outright, every frame: a scheduled change each frame piles up in Safari on an
+    // iPhone until the sound goes quiet (and the camera moves smoothly anyway)
     if (l.positionX) {
-      l.positionX.setTargetAtTime(pos[0], t, 0.05);
-      l.positionY.setTargetAtTime(pos[1], t, 0.05);
-      l.positionZ.setTargetAtTime(pos[2], t, 0.05);
-      l.forwardX.setTargetAtTime(forward[0], t, 0.05);
-      l.forwardY.setTargetAtTime(forward[1], t, 0.05);
-      l.forwardZ.setTargetAtTime(forward[2], t, 0.05);
-      l.upX.setTargetAtTime(up[0], t, 0.05);
-      l.upY.setTargetAtTime(up[1], t, 0.05);
-      l.upZ.setTargetAtTime(up[2], t, 0.05);
+      l.positionX.value = pos[0];
+      l.positionY.value = pos[1];
+      l.positionZ.value = pos[2];
+      l.forwardX.value = forward[0];
+      l.forwardY.value = forward[1];
+      l.forwardZ.value = forward[2];
+      l.upX.value = up[0];
+      l.upY.value = up[1];
+      l.upZ.value = up[2];
     } else {
       l.setPosition(...pos);
       l.setOrientation(...forward, ...up);
@@ -413,8 +414,13 @@ export class Sound {
   }
 
   // The lamp's hum, which goes when the lamp goes.
+  // called every frame: eased here (0.4 s) and set outright, not scheduled (see setListener)
   setLampHum(k) {
-    if (this.lampHum) this.lampHum.gain.setTargetAtTime(0.012 * k, this.now, 0.4);
+    if (!this.lampHum) return;
+    const t = this.now, dt = Math.max(0, t - (this.humAt ?? t));
+    this.humAt = t;
+    this.hum = 0.012 * k + ((this.hum ?? 0.012 * k) - 0.012 * k) * Math.exp(-dt / 0.4);
+    this.lampHum.gain.value = this.hum;
   }
 
   // ------------------------------------------------------------ one-shots
