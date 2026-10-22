@@ -181,7 +181,9 @@ def bake_groups():
         if o.type != 'MESH' or o.get('lm') not in groups:
             continue
         lib.apply_modifiers(o)
-        if o.get('imported') and len(o.data.vertices) > VERTEX_MIN:
+        # the encyclopaedias stay with the vertices even thinned out: a hundred small dark
+        # volumes in an atlas would pull its scale down and clip the lamp-lit felt
+        if o.get('imported') and (len(o.data.vertices) > VERTEX_MIN or o.name.startswith('books')):
             vertex.append(o)
         else:
             groups[o['lm']].append(o)
@@ -482,9 +484,10 @@ def export_textures():
     used = sorted({m['params']['tex'] for m in bpy.data.materials if 'params' in m and m['params']['tex']})
     files = {}
     for tex in used:
-        res = TEX_RES.get(tex, 1024)
         files[tex] = {}
         for kind in ('diff', 'nor', 'rough'):
+            # only the colour of the big surfaces needs 2K; their relief and sheen do not
+            res = TEX_RES.get(tex, 1024) if kind == 'diff' else 1024
             src = lib.ASSETS / 'textures' / tex / f'{kind}.jpg'
             if not src.exists():
                 continue
@@ -503,7 +506,7 @@ def export_textures():
             out.pixels.foreach_set(px)
             name = f'{tex}_{kind}.webp'
             out.file_format = 'WEBP'
-            out.save(filepath=str(d / name), quality=86)
+            out.save(filepath=str(d / name), quality=80)
             bpy.data.images.remove(img)
             bpy.data.images.remove(out)
             files[tex][kind] = f'tex/{name}'
@@ -532,25 +535,62 @@ BIG_PROPS = ('bookcase', 'books', 'chair_window', 'desk')
 
 def slim_models():
     """Thin out what the Poly Haven models would cost: dense meshes are decimated,
-    small props get 512px textures."""
+    small props get 512px textures, the big ones 512px for all but their colour."""
     for o in list(bpy.data.objects):
-        if o.type == 'MESH' and o.get('imported') and len(o.data.vertices) > 12000:
+        if o.type != 'MESH' or not o.get('imported'):
+            continue
+        n = len(o.data.vertices)
+        # each volume of an encyclopaedia is 3500 vertices of rounded spine, and there are
+        # a hundred of them on the shelves: a few hundred each will do from the room
+        target = 600 if o.name.startswith('books') else 12000
+        if n > target * 1.3:
             mod = o.modifiers.new('decimate', 'DECIMATE')
-            mod.ratio = max(0.15, 12000 / len(o.data.vertices))
+            mod.ratio = max(0.15, target / n)
             lib.apply_modifiers(o)
     small = set()
     for o in bpy.data.objects:
-        if o.type != 'MESH' or not o.get('imported') or o.name.startswith(BIG_PROPS):
+        if o.type != 'MESH' or not o.get('imported'):
             continue
+        big = o.name.startswith(BIG_PROPS)
         for slot in o.material_slots:
             if slot.material:
                 for n in slot.material.node_tree.nodes:
-                    if n.type == 'TEX_IMAGE' and n.image:
+                    if n.type == 'TEX_IMAGE' and n.image and (not big or '_diff' not in n.image.name):
                         small.add(n.image)
     for img in small:
         w, h = img.size
         if max(w, h) > 512:
             img.scale(w * 512 // max(w, h), h * 512 // max(w, h))
+    # the export writes WebP, and for a roughness map with no metal beside it the exporter
+    # makes a one-channel image, which WebP cannot hold. Those are small props (page edges,
+    # frames, the lens): give them the map's average as a plain roughness instead.
+    done = set()
+    for o in bpy.data.objects:
+        if o.type != 'MESH' or not o.get('imported'):
+            continue
+        for slot in o.material_slots:
+            m = slot.material
+            if not m or m.name in done or not m.use_nodes:
+                continue
+            done.add(m.name)
+            b = next((n for n in m.node_tree.nodes if n.type == 'BSDF_PRINCIPLED'), None)
+            if not b or not b.inputs['Roughness'].is_linked:
+                continue
+            link = b.inputs['Roughness'].links[0]
+            met = b.inputs['Metallic'].links[0].from_node if b.inputs['Metallic'].is_linked else None
+            # roughness and metal read from one packed map pass through as they are
+            if met is link.from_node:
+                continue
+            node, ch = link.from_node, 0
+            if node.type == 'SEPARATE_COLOR':
+                ch = {'Red': 0, 'Green': 1, 'Blue': 2}.get(link.from_socket.name, 0)
+                node = node.inputs[0].links[0].from_node if node.inputs[0].is_linked else node
+            if node.type != 'TEX_IMAGE' or not node.image:
+                continue
+            px = np.zeros(node.image.size[0] * node.image.size[1] * 4, dtype=np.float32)
+            node.image.pixels.foreach_get(px)
+            m.node_tree.links.remove(link)
+            b.inputs['Roughness'].default_value = float(px[ch::4].mean())
 
 
 def export(manifest, vscales, textures):
@@ -568,11 +608,11 @@ def export(manifest, vscales, textures):
     bpy.ops.export_scene.gltf(
         filepath=str(OUT / 'room.glb'), export_format='GLB', use_selection=True, export_yup=True,
         export_apply=True, export_texcoords=True, export_normals=True, export_extras=True,
-        export_materials='EXPORT', export_image_format='JPEG', export_jpeg_quality=80, export_vertex_color='ACTIVE',
+        export_materials='EXPORT', export_image_format='WEBP', export_image_quality=80, export_vertex_color='ACTIVE',
         export_all_vertex_colors=True, export_cameras=False, export_lights=False, export_animations=False,
         export_draco_mesh_compression_enable=True, export_draco_mesh_compression_level=7,
         export_draco_position_quantization=14, export_draco_normal_quantization=10,
-        export_draco_texcoord_quantization=18, export_draco_color_quantization=10,
+        export_draco_texcoord_quantization=16, export_draco_color_quantization=10,
     )
     mats_out = {}
     for m in bpy.data.materials:

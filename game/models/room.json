@@ -3,7 +3,7 @@
   "arch": {
    "lamp": {
     "file": "lm_arch_lamp.webp",
-    "scale": 0.021662436425685883
+    "scale": 0.021662449464201927
    },
    "amb": {
     "file": "lm_arch_amb.webp",
@@ -13,17 +13,17 @@
   "cab": {
    "lamp": {
     "file": "lm_cab_lamp.webp",
-    "scale": 0.049697864800691605
+    "scale": 0.04969785735011101
    },
    "amb": {
     "file": "lm_cab_amb.webp",
-    "scale": 0.015449057333171368
+    "scale": 0.01544846873730421
    }
   },
   "furn": {
    "lamp": {
     "file": "lm_furn_lamp.webp",
-    "scale": 0.22773607075214386
+    "scale": 0.22773605585098267
    },
    "amb": {
     "file": "lm_furn_amb.webp",
@@ -32,8 +32,8 @@
   }
  },
  "vertex": {
-  "lamp": 0.0022870046086609364,
-  "amb": 0.059209372848272324
+  "lamp": 0.0013845862122252584,
+  "amb": 0.2874754071235657
  },
  "textures": {
   "Cardboard004": {
