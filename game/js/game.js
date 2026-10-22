@@ -503,6 +503,8 @@ export class Game {
         if (r?.card && this.inBay.includes(r.card.key)) card = r.card.key;
       }
       this.drag = { x: e.clientX, y: e.clientY, moved: false, card };
+      // a finger has not been anywhere since it last let go
+      this.pointerPx = [e.clientX, e.clientY];
     });
     window.addEventListener('pointerup', () => {
       if (this.hand?.held) this.hand.held = false;
@@ -532,7 +534,8 @@ export class Game {
           this.ui.tooltip(null);
         }
         if (d.moved && d.card) this.dragCard(d.card);
-        else if (d.moved) this.rails.lookBy(dx, dy);
+        // a finger takes hold of the room: what is under it stays under it; a mouse turns faster
+        else if (d.moved) this.rails.lookBy(dx, dy, e.pointerType === 'mouse' ? undefined : 2 * Math.atan(this.viewFrame().vw / 2) / window.innerWidth);
       }
       this.pointerPx = [e.clientX, e.clientY];
       this.pointer.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);

@@ -108,11 +108,12 @@ export class Rails {
     this.onArrive?.('free');
   }
 
-  lookBy(dx, dy) {
+  // rate: radians per pixel dragged
+  lookBy(dx, dy, rate = 0.0045) {
     if (this.move) return;
     if (!this.free) this.enterFree();
-    this.yaw -= dx * 0.0045;
-    this.pitch = THREE.MathUtils.clamp(this.pitch - dy * 0.0045, -1.25, 1.1);
+    this.yaw -= dx * rate;
+    this.pitch = THREE.MathUtils.clamp(this.pitch - dy * rate, -1.25, 1.1);
   }
 
   // Walk to a point on the floor, still facing the way you were facing.
