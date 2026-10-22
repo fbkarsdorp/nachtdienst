@@ -39,7 +39,8 @@ filed takes it a step back down, and on the cabinet it shrinks back a moment. Th
 waiting their turn are quiet. Nobody explains this: when the last drawer of a cabinet is
 filed, its leak clears off the cabinet in front of you, then your head turns of its own
 accord to where it was in the room, you watch it stop, and the cabinet's *enactment*
-plays there.
+plays there. Not for the clock: its enactment is heard (the ticking stops, and goes on),
+and you have just been at the clock to set it, so you hear it from where you stand.
 
 ## Running it
 

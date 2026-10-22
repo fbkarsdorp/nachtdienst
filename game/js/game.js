@@ -3339,9 +3339,15 @@ export class Game {
     }
   }
 
-  // Look round at the leak as it stops and the enactment plays, and back.
+  // Look round at the leak as it stops and the enactment plays, and back (not for the clock).
   watchSettle(fam) {
     this.atmos.prepare(fam);
+    // the clock's is heard, not seen, and it has just been looked at to be set: no turn for it
+    if (fam === 'voortekenen') {
+      this.atmos.settle(fam, { show: true });
+      this.enact(fam);
+      return Promise.resolve();
+    }
     const half = fam === 'voortekenen' ? 0.45 : fam === 'spoken' ? 0.55 : 0.9;
     const hold = { voortekenen: 5.6, wittewieven: 5.4, weerwolven: 6.8, spoken: 4.4 }[fam];
     return this.glance(() => this.leakAt(fam), {
