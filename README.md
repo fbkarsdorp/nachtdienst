@@ -56,7 +56,10 @@ Use headphones: the room is mostly sound (the clock, the wind at the window, thi
 On a wide screen the lens is 52° high. On a screen held upright (a phone, a tablet) it keeps
 the view's width instead, 58° across, and the picture sits a little high, so the floor at
 the bottom holds the places and card buttons; on a touch screen held upright these are
-larger (`fitView` in `game/js/game.js`, the last block of `game/css/style.css`).
+larger (`fitView` in `game/js/game.js`, the last block of `game/css/style.css`). On a
+touch screen the cards' faces are kept at the size a phone can show (about half each way,
+`SHARP` in `game/js/cards3d.js`) and the paper grain is made at half size: a torn card's
+dozen halves at full size took more memory than an iPhone gives a page.
 
 Online it is served from GitHub Pages: every push to `main` publishes `game/` as it is
 (`.github/workflows/pages.yml`). The raw dumps in `data/` and the downloaded sources in

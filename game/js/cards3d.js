@@ -17,6 +17,33 @@ export const CARD_PACE = 1.0;
 // the index tab on a card's top edge, seen when it stands in its drawer
 const TAB = { w: 0.13, h: 0.032 };
 
+// On a touch screen a card is never shown wider than about 750 pixels (held up to read,
+// either way round), so its faces are kept that small: drawn full size on a shared sheet,
+// then copied down. A torn card's dozen halves at full size would take a phone's memory.
+const SHARP = (() => {
+  if (typeof matchMedia !== 'function' || !matchMedia('(pointer: coarse)').matches) return 1;
+  const L = Math.max(screen.width, screen.height), S = Math.min(screen.width, screen.height);
+  // widest reading: lying (liftPose, 68 % across or 64 % up) or upright (94 % across); the
+  // renderer's pixel ratio is capped at 1.75 (main.js); a little to spare for the fan's close look
+  const css = Math.max(Math.min(0.68 * L, 0.64 * S * (CARD_W / CARD_H)), 0.94 * S);
+  return THREE.MathUtils.clamp((css * Math.min(window.devicePixelRatio || 1, 1.75) * 1.15) / CARD_W, 0.5, 1);
+})();
+const sheets = new Map();
+function drawOn(draw, c, data, w, h) {
+  if (c.width === w) return draw(c, data);
+  const key = `${w}x${h}`;
+  if (!sheets.has(key)) sheets.set(key, makeCanvas(w, h));
+  const s = sheets.get(key);
+  s.linkRect = null;
+  draw(s, data);
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(s, 0, 0, c.width, c.height);
+  const k = c.width / w, b = s.linkRect;
+  c.linkRect = b ? { x: b.x * k, y: b.y * k, w: b.w * k, h: b.h * k } : null;
+}
+
 export class CardObj {
   // half: 'top' or 'bottom' for the two pieces of a torn card, half the height
   // tab: () => { place, year, code } for a card that stands in a drawer with a tab
@@ -28,9 +55,10 @@ export class CardObj {
     this.half = half;
     this.size = { w: CARD_SIZE.w, h: half ? CARD_SIZE.h / 2 : CARD_SIZE.h };
     this.group = new THREE.Group();
-    const ch = Math.round((half ? CARD_H / 2 : CARD_H) * res);
-    this.frontCanvas = makeCanvas(Math.round(CARD_W * res), ch);
-    this.backCanvas = makeCanvas(Math.round(CARD_W * res), ch);
+    // the size it is drawn at, and the size it is kept at (SHARP)
+    this.drawn = { w: Math.round(CARD_W * res), h: Math.round((half ? CARD_H / 2 : CARD_H) * res) };
+    this.frontCanvas = makeCanvas(Math.round(this.drawn.w * SHARP), Math.round(this.drawn.h * SHARP));
+    this.backCanvas = makeCanvas(Math.round(this.drawn.w * SHARP), Math.round(this.drawn.h * SHARP));
     this.frontTex = canvasTexture(this.frontCanvas);
     this.backTex = canvasTexture(this.backCanvas);
     const geo = new THREE.PlaneGeometry(this.size.w, this.size.h);
@@ -98,8 +126,8 @@ export class CardObj {
 
   redraw() {
     const v = this.view();
-    drawFront(this.frontCanvas, v.front);
-    drawBack(this.backCanvas, v.back);
+    drawOn(drawFront, this.frontCanvas, v.front, this.drawn.w, this.drawn.h);
+    drawOn(drawBack, this.backCanvas, v.back, this.drawn.w, this.drawn.h);
     if (this.tab) {
       drawTab(this.tabCanvas, this.tabView());
       this.tabTex.needsUpdate = true;

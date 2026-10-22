@@ -57,25 +57,36 @@ export function paperBase(ctx, w, h, { tone = [236, 227, 207], age = 0.5, seed =
   ctx.putImageData(img, 0, 0);
 }
 
-// Grain is computed once per size and seed, then tinted, so every card is cheap.
+// Grain is computed once per size and seed, then tinted, so every card is cheap. On a
+// touch screen it is made at half size and drawn larger: things are seen smaller there,
+// and the full-size sheets would take a phone's memory.
 const grainCache = new Map();
-export function paperCanvas(w, h, opts = {}) {
-  const seed = opts.seed || 7;
-  const age = Math.round((opts.age ?? 0.5) * 4) / 4;
+const GRAIN = typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches ? 0.5 : 1;
+function grain(w, h, seed, age) {
   const key = `${w}x${h}:${seed}:${age}`;
   if (!grainCache.has(key)) {
-    const c = canvas(w, h);
-    paperBase(c.getContext('2d'), w, h, { tone: [255, 255, 255], age, seed });
+    const gw = Math.ceil(w * GRAIN), gh = Math.ceil(h * GRAIN);
+    const c = canvas(gw, gh);
+    paperBase(c.getContext('2d'), gw, gh, { tone: [255, 255, 255], age, seed });
     grainCache.set(key, c);
   }
-  const out = canvas(w, h);
-  const ctx = out.getContext('2d');
-  ctx.drawImage(grainCache.get(key), 0, 0);
+  return grainCache.get(key);
+}
+
+// paper drawn straight onto a canvas just cleared (as paperCanvas, without a sheet of its own)
+export function paperInto(ctx, w, h, opts = {}) {
+  const age = Math.round((opts.age ?? 0.5) * 4) / 4;
+  ctx.drawImage(grain(w, h, opts.seed || 7, age), 0, 0, w, h);
   const t = opts.tone || [236, 227, 207];
   ctx.globalCompositeOperation = 'multiply';
   ctx.fillStyle = `rgb(${t[0] | 0},${t[1] | 0},${t[2] | 0})`;
   ctx.fillRect(0, 0, w, h);
   ctx.globalCompositeOperation = 'source-over';
+}
+
+export function paperCanvas(w, h, opts = {}) {
+  const out = canvas(w, h);
+  paperInto(out.getContext('2d'), w, h, opts);
   return out;
 }
 

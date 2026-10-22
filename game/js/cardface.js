@@ -1,7 +1,7 @@
 // Filing cards drawn on canvas in the house style: typed description, place,
 // year, collector's initials, a catalogue code in red pencil, and the
 // collector's pencil remarks in the margin.
-import { paperCanvas, makeCanvas } from './textures.js';
+import { paperInto, makeCanvas } from './textures.js';
 
 export const CARD_W = 1600;
 export const CARD_H = 966;
@@ -272,7 +272,7 @@ export function drawNote(c, data) {
   const w = c.width, h = c.height;
   const r = rnd(4242);
   ctx.clearRect(0, 0, w, h);
-  ctx.drawImage(paperCanvas(w, h, { tone: [240, 233, 214], age: 0.55, seed: 8 }), 0, 0);
+  paperInto(ctx, w, h, { tone: [240, 233, 214], age: 0.55, seed: 8 });
   stains(ctx, w, h, r);
   rules(ctx, w, h, r, { header: false });
   const lines = String(data.note).split('\n');
@@ -311,7 +311,7 @@ export function drawFront(c, data) {
   // J.J.V.'s summary on blue-grey; the archive behind the divider on grey stock (3h)
   const tone = data.summary ? { tone: [214, 222, 226], age: 0.4, seed: 6 }
     : data.archive ? { tone: [200, 200, 194], age: 0.6, seed: 1 + ((data.n || 1) % 5) } : cardTone(data.n || 1);
-  ctx.drawImage(paperCanvas(w, h, tone), 0, 0);
+  paperInto(ctx, w, h, tone);
   stains(ctx, w, h, r);
   if (data.damp) damp(ctx, w, h, r);
   const left = 64;
@@ -459,7 +459,7 @@ function drawEnvelope(c, E) {
   const w = c.width, h = c.height, u = w / 1600;
   const r = rnd(911 + w);
   ctx.clearRect(0, 0, w, h);
-  ctx.drawImage(paperCanvas(w, h, { tone: MANILA, age: 0.7, seed: 4 }), 0, 0);
+  paperInto(ctx, w, h, { tone: MANILA, age: 0.7, seed: 4 });
   const red = 'rgba(160,34,26,0.85)';
   if (E.sealedFor) {
     // cabinet 5: sealed, no count, only a place name
@@ -560,7 +560,7 @@ function drawEnvelopeBack(c) {
   const ctx = c.getContext('2d');
   const w = c.width, h = c.height, u = w / 1600;
   ctx.clearRect(0, 0, w, h);
-  ctx.drawImage(paperCanvas(w, h, { tone: MANILA, age: 0.6, seed: 5 }), 0, 0);
+  paperInto(ctx, w, h, { tone: MANILA, age: 0.6, seed: 5 });
   ctx.fillStyle = 'rgba(96,70,36,0.55)';
   ctx.beginPath();
   ctx.moveTo(0, 0); ctx.lineTo(w, 0); ctx.lineTo(w / 2, h * 0.46); ctx.closePath();
@@ -579,7 +579,7 @@ export function drawTab(c, data) {
   const w = c.width, h = c.height;
   const r = rnd(7 + (data.year || 0));
   ctx.clearRect(0, 0, w, h);
-  ctx.drawImage(paperCanvas(w, h, { tone: [234, 226, 204], age: 0.5, seed: 2 }), 0, 0);
+  paperInto(ctx, w, h, { tone: [234, 226, 204], age: 0.5, seed: 2 });
   ctx.font = `44px ${TYPE}`;
   const place = (data.place || '——').toUpperCase();
   const label = data.year ? `${place} ${data.year}` : place;
@@ -610,7 +610,7 @@ export function drawBack(c, data) {
   const w = c.width, h = c.height;
   const r = rnd((data.n || 1) * 3 + 1);
   ctx.clearRect(0, 0, w, h);
-  ctx.drawImage(paperCanvas(w, h, data.archive ? { tone: [196, 196, 190], age: 0.6, seed: 2 } : cardTone((data.n || 1) + 1)), 0, 0);
+  paperInto(ctx, w, h, data.archive ? { tone: [196, 196, 190], age: 0.6, seed: 2 } : cardTone((data.n || 1) + 1));
   stains(ctx, w, h, r);
   rules(ctx, w, h, r, { header: false });
   ctx.font = `30px ${TYPE}`;
@@ -634,7 +634,7 @@ export function drawFinal(c, d) {
   const w = c.width, h = c.height;
   const r = rnd(1994);
   ctx.clearRect(0, 0, w, h);
-  ctx.drawImage(paperCanvas(w, h, { tone: [238, 230, 210], age: 0.7, seed: 4 }), 0, 0);
+  paperInto(ctx, w, h, { tone: [238, 230, 210], age: 0.7, seed: 4 });
   stains(ctx, w, h, r);
   rules(ctx, w, h, r);
   const left = 64;

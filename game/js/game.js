@@ -2066,6 +2066,9 @@ export class Game {
       d *= k;
       ox2 *= k;
       oy *= k;
+      // and stays on the screen, which on a narrow one it would not from an outer column
+      const room = 0.48 * vw * d - W / 2;
+      ox2 = THREE.MathUtils.clamp(ox2, -Math.max(0, room), Math.max(0, room));
     }
     const fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(q);
     const right = new THREE.Vector3(1, 0, 0).applyQuaternion(q);
