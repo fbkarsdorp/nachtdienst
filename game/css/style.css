@@ -244,3 +244,16 @@ body.ending #note, body.ending #cardbar, body.ending #choice, body.ending #toolt
   #cardbar .lbl { display: none; }
 }
 
+/* a phone held upright: the floor under the picture holds the controls, big enough for a thumb */
+@media (pointer: coarse) and (orientation: portrait) {
+  #nav { display: grid; grid-template-columns: repeat(3, auto); gap: 4px; bottom: 14px; opacity: .85; }
+  #nav button { padding: 10px 12px; font-size: 13px; }
+  #cardbar { bottom: 116px; gap: 6px; }
+  #cardbar .tab { padding: 10px 13px; }
+  #cardbar .ico { font-size: 20px; }
+  #held { bottom: 116px; }
+  #subtitle { bottom: 178px; }
+  #sound-toggle { opacity: .8; }
+  /* typing: the phone's keyboard is up, and the places would sit on the typewriter's keys */
+  body:has(#keytrap:focus) #nav { display: none; }
+}

@@ -61,6 +61,12 @@ const SLOTS = { x: [TABLE.x - 0.03, TABLE.x + 0.26], z: [TABLE.z + 0.34, TABLE.z
 // a card standing in the tray (or in a drawer) faces its front (+x in it)
 const Q_STAND = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.PI / 2, 0));
 const Z_AXIS = new THREE.Vector3(0, 0, 1);
+// The lens: 52 degrees high on a wide screen. On a screen held upright the view keeps
+// its width instead (58 degrees across), and the picture sits a little high, so the
+// floor below it is free for the controls and the typing keyboard.
+const FOV = 52;
+const UPRIGHT_ACROSS = 58;
+const UPRIGHT_LIFT = 0.18;
 
 export class Game {
   constructor(ctx) {
@@ -135,8 +141,8 @@ export class Game {
     this.hover = null;
     this.hoverTarget = null;
     this.glancing = false;
-    this.baseFov = this.camera.fov;
     this.fovTween = null;
+    this.fitView();
     // a cold light where something happens during a glance; always in the scene, so no recompile
     this.glanceLight = new THREE.PointLight(0xaabbd6, 0, 3.2, 2);
     this.glanceLightTarget = 0;
@@ -2041,10 +2047,8 @@ export class Game {
 
   // the top half alone in the first row; the twelve halves below it, four to a row
   fanPose(i, n) {
-    const cam = this.camera;
     const q = this.rails.baseQuat.clone();
-    const vh = 2 * Math.tan(THREE.MathUtils.degToRad(cam.fov / 2));
-    const vw = vh * cam.aspect;
+    const { vw, vh } = this.viewFrame();
     const W = CARD_SIZE.w, H = CARD_SIZE.h / 2, gap = 0.01, sep = 0.03;
     const cols = 3, rows = 1 + Math.ceil((n - 1) / cols);
     const tw = cols * W + (cols - 1) * gap, th = rows * H + (rows - 1) * gap + sep;
@@ -2130,8 +2134,7 @@ export class Game {
     const cam = this.camera;
     const q = this.rails.baseQuat.clone();
     const base = this.rails.basePos.clone();
-    const vh = 2 * Math.tan(THREE.MathUtils.degToRad(cam.fov / 2));
-    const vw = vh * cam.aspect;
+    const { vw, vh } = this.viewFrame();
     const W = CARD_SIZE.w, H = half ? CARD_SIZE.h / 2 : CARD_SIZE.h, gap = 0.012;
     let d, ox = 0, oy = 0;
     if (count === 1) {
@@ -2932,8 +2935,8 @@ export class Game {
         this.glancing = true;
         this.ui.tooltip(null);
         const p = at();
-        const fov = THREE.MathUtils.radToDeg(2 * Math.atan(half / this.camera.position.distanceTo(p)));
-        this.zoom(THREE.MathUtils.clamp(fov, 16, this.baseFov), turn);
+        const t = half / this.camera.position.distanceTo(p);
+        this.zoom(THREE.MathUtils.clamp(this.fovFor(t, t), 16, this.baseFov), turn);
         setTimeout(() => this.zoom(this.baseFov, turn), (turn + hold) * 1000);
         this.rails.glanceHead(p, { turn, hold, onLook }).then(() => { this.glancing = false; resolve(); });
       };
@@ -3293,6 +3296,30 @@ export class Game {
       dg.userData.pulse = 1;
       if (j % 3 === 0) this.sound.dialClick(dg.getWorldPosition(new THREE.Vector3()).toArray());
     }, j * gap));
+  }
+
+  // fit the lens to the screen (see FOV); called again on every resize
+  fitView() {
+    const cam = this.camera, w = window.innerWidth, h = window.innerHeight;
+    const lift = UPRIGHT_LIFT * THREE.MathUtils.clamp((1 - w / h) / 0.4, 0, 1);
+    this.viewLift = lift;
+    cam.aspect = w / h / (1 + lift);
+    this.baseFov = Math.max(FOV, this.fovFor(0, Math.tan(THREE.MathUtils.degToRad(UPRIGHT_ACROSS / 2))));
+    if (lift) cam.setViewOffset(w, h * (1 + lift), 0, h * lift, w, h);
+    else cam.clearViewOffset();
+    if (!this.fovTween) cam.fov = this.baseFov;
+    cam.updateProjectionMatrix();
+  }
+
+  // the lens that shows at least so much up and down, and so much across (as tangents of half the angle)
+  fovFor(high, across = high) {
+    return THREE.MathUtils.radToDeg(2 * Math.atan(Math.max(high, across / this.camera.aspect)));
+  }
+
+  // how much is seen at distance 1 straight ahead, across and up and down
+  viewFrame() {
+    const t = Math.tan(THREE.MathUtils.degToRad(this.camera.fov / 2));
+    return { vw: 2 * t * this.camera.aspect, vh: (2 * t) / (1 + this.viewLift) };
   }
 
   zoom(fov, dur) {

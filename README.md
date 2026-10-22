@@ -53,6 +53,11 @@ open http://localhost:8137/
 
 Use headphones: the room is mostly sound (the clock, the wind at the window, things outside).
 
+On a wide screen the lens is 52° high. On a screen held upright (a phone, a tablet) it keeps
+the view's width instead, 58° across, and the picture sits a little high, so the floor at
+the bottom holds the places and card buttons; on a touch screen held upright these are
+larger (`fitView` in `game/js/game.js`, the last block of `game/css/style.css`).
+
 Online it is served from GitHub Pages: every push to `main` publishes `game/` as it is
 (`.github/workflows/pages.yml`). The raw dumps in `data/` and the downloaded sources in
 `blender/assets/` are not in the repository; the pipeline and `blender/fetch_assets.py`

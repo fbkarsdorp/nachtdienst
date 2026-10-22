@@ -229,8 +229,7 @@ async function boot() {
   frame();
 
   window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+    game.fitView();
     renderer.setSize(window.innerWidth, window.innerHeight);
     post.setSize(window.innerWidth, window.innerHeight);
     if (game.reading) game.layoutReading();
