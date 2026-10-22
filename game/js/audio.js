@@ -25,6 +25,9 @@ export class Sound {
     if (this.ctx) return;
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return;
+    // an iPhone plays a page's sound as background noise, silenced by the ring switch,
+    // unless the page says it is something to listen to
+    if (navigator.audioSession) navigator.audioSession.type = 'playback';
     const ctx = (this.ctx = new AC());
     this.master = ctx.createGain();
     this.master.gain.value = 0.9;
@@ -49,7 +52,8 @@ export class Sound {
     this.startClock();
   }
 
-  resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+  // after a call, a locked screen or another app, an iPhone leaves the sound 'interrupted'
+  resume() { if (this.ctx && this.ctx.state !== 'running' && this.ctx.state !== 'closed') this.ctx.resume(); }
 
   setEnabled(on) {
     this.enabled = on;

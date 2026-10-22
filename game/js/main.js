@@ -250,6 +250,8 @@ async function boot() {
     resume.disabled = true;
     sound.init();
     sound.resume();
+    // any touch or click brings the sound back if the phone took it away meanwhile
+    window.addEventListener('pointerup', () => sound.resume(), { passive: true });
     const name = $('tc-name').value.trim().slice(0, 32);
     try { localStorage.setItem('nd:name', name); } catch { /* fine */ }
     game.state.name = name;
