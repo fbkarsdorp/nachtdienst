@@ -1,0 +1,1001 @@
+{
+ "lightmaps": {
+  "arch": {
+   "lamp": {
+    "file": "lm_arch_lamp.webp",
+    "scale": 0.021662436425685883
+   },
+   "amb": {
+    "file": "lm_arch_amb.webp",
+    "scale": 0.3780848979949951
+   }
+  },
+  "cab": {
+   "lamp": {
+    "file": "lm_cab_lamp.webp",
+    "scale": 0.049697864800691605
+   },
+   "amb": {
+    "file": "lm_cab_amb.webp",
+    "scale": 0.015449057333171368
+   }
+  },
+  "furn": {
+   "lamp": {
+    "file": "lm_furn_lamp.webp",
+    "scale": 0.22773607075214386
+   },
+   "amb": {
+    "file": "lm_furn_amb.webp",
+    "scale": 0.05196312814950943
+   }
+  }
+ },
+ "vertex": {
+  "lamp": 0.0022870046086609364,
+  "amb": 0.059209372848272324
+ },
+ "textures": {
+  "Cardboard004": {
+   "diff": "tex/Cardboard004_diff.webp",
+   "nor": "tex/Cardboard004_nor.webp",
+   "rough": "tex/Cardboard004_rough.webp"
+  },
+  "clean_plaster": {
+   "diff": "tex/clean_plaster_diff.webp",
+   "nor": "tex/clean_plaster_nor.webp",
+   "rough": "tex/clean_plaster_rough.webp"
+  },
+  "dark_wood": {
+   "diff": "tex/dark_wood_diff.webp",
+   "nor": "tex/dark_wood_nor.webp",
+   "rough": "tex/dark_wood_rough.webp"
+  },
+  "herringbone_parquet": {
+   "diff": "tex/herringbone_parquet_diff.webp",
+   "nor": "tex/herringbone_parquet_nor.webp",
+   "rough": "tex/herringbone_parquet_rough.webp"
+  },
+  "hessian_230": {
+   "diff": "tex/hessian_230_diff.webp",
+   "nor": "tex/hessian_230_nor.webp",
+   "rough": "tex/hessian_230_rough.webp"
+  },
+  "leather_white": {
+   "diff": "tex/leather_white_diff.webp",
+   "nor": "tex/leather_white_nor.webp",
+   "rough": "tex/leather_white_rough.webp"
+  },
+  "metal_plate": {
+   "diff": "tex/metal_plate_diff.webp",
+   "nor": "tex/metal_plate_nor.webp",
+   "rough": "tex/metal_plate_rough.webp"
+  },
+  "oak_veneer_01": {
+   "diff": "tex/oak_veneer_01_diff.webp",
+   "nor": "tex/oak_veneer_01_nor.webp",
+   "rough": "tex/oak_veneer_01_rough.webp"
+  },
+  "poly_wool_herringbone": {
+   "diff": "tex/poly_wool_herringbone_diff.webp",
+   "nor": "tex/poly_wool_herringbone_nor.webp",
+   "rough": "tex/poly_wool_herringbone_rough.webp"
+  },
+  "rough_linen": {
+   "diff": "tex/rough_linen_diff.webp",
+   "nor": "tex/rough_linen_nor.webp",
+   "rough": "tex/rough_linen_rough.webp"
+  },
+  "walnut_veneer": {
+   "diff": "tex/walnut_veneer_diff.webp",
+   "nor": "tex/walnut_veneer_nor.webp",
+   "rough": "tex/walnut_veneer_rough.webp"
+  }
+ },
+ "materials": {
+  "alu": {
+   "tex": "",
+   "color": [
+    0.62,
+    0.62,
+    0.6
+   ],
+   "rough": 0.32,
+   "metal": 1.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "archivebox": {
+   "tex": "Cardboard004",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.85,
+   "metal": 0.0,
+   "tint": [
+    0.5,
+    0.5,
+    0.48
+   ],
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "archivebox_blue": {
+   "tex": "Cardboard004",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.85,
+   "metal": 0.0,
+   "tint": [
+    0.3,
+    0.36,
+    0.42
+   ],
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "bakelite": {
+   "tex": "",
+   "color": [
+    0.08,
+    0.05,
+    0.03
+   ],
+   "rough": 0.3,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "beam": {
+   "tex": "dark_wood",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.7,
+   "metal": 0.0,
+   "tint": [
+    0.62,
+    0.52,
+    0.44
+   ],
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "black": {
+   "tex": "",
+   "color": [
+    0.015,
+    0.014,
+    0.013
+   ],
+   "rough": 0.85,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "brass": {
+   "tex": "metal_plate",
+   "color": [
+    0.78,
+    0.58,
+    0.3
+   ],
+   "rough": 0.35,
+   "metal": 1.0,
+   "tint": [
+    0.78,
+    0.58,
+    0.3
+   ],
+   "normal": 0.15,
+   "rough_scale": 0.7,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "bulb": {
+   "tex": "",
+   "color": [
+    1.0,
+    0.95,
+    0.85
+   ],
+   "rough": 0.2,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": [
+    1.0,
+    0.9,
+    0.7
+   ],
+   "emission_strength": 30.0,
+   "alpha": 1.0
+  },
+  "cabinet": {
+   "tex": "walnut_veneer",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.45,
+   "metal": 0.0,
+   "tint": [
+    0.4,
+    0.29,
+    0.21
+   ],
+   "normal": 0.6,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "cable": {
+   "tex": "",
+   "color": [
+    0.03,
+    0.03,
+    0.03
+   ],
+   "rough": 0.6,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "cardboard": {
+   "tex": "Cardboard004",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.85,
+   "metal": 0.0,
+   "tint": [
+    0.95,
+    0.9,
+    0.85
+   ],
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "ceiling": {
+   "tex": "clean_plaster",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.95,
+   "metal": 0.0,
+   "tint": [
+    0.88,
+    0.86,
+    0.8
+   ],
+   "normal": 0.5,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "chrome": {
+   "tex": "",
+   "color": [
+    0.8,
+    0.8,
+    0.78
+   ],
+   "rough": 0.14,
+   "metal": 1.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "darkbrass": {
+   "tex": "metal_plate",
+   "color": [
+    0.42,
+    0.31,
+    0.15
+   ],
+   "rough": 0.45,
+   "metal": 1.0,
+   "tint": [
+    0.42,
+    0.31,
+    0.15
+   ],
+   "normal": 0.15,
+   "rough_scale": 0.9,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "darkplastic": {
+   "tex": "",
+   "color": [
+    0.05,
+    0.05,
+    0.05
+   ],
+   "rough": 0.4,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "deck": {
+   "tex": "",
+   "color": [
+    0.06,
+    0.062,
+    0.066
+   ],
+   "rough": 0.38,
+   "metal": 0.4,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "door": {
+   "tex": "walnut_veneer",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.42,
+   "metal": 0.0,
+   "tint": [
+    0.5,
+    0.38,
+    0.29
+   ],
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "drawer": {
+   "tex": "oak_veneer_01",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.45,
+   "metal": 0.0,
+   "tint": [
+    0.46,
+    0.32,
+    0.21
+   ],
+   "normal": 0.7,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "enamel": {
+   "tex": "",
+   "color": [
+    0.025,
+    0.026,
+    0.024
+   ],
+   "rough": 0.22,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "floor": {
+   "tex": "herringbone_parquet",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.55,
+   "metal": 0.0,
+   "tint": [
+    0.62,
+    0.5,
+    0.4
+   ],
+   "normal": 0.8,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "glass": {
+   "tex": "",
+   "color": [
+    0.04,
+    0.05,
+    0.06
+   ],
+   "rough": 0.04,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 0.18
+  },
+  "greenglass": {
+   "tex": "",
+   "color": [
+    0.02,
+    0.16,
+    0.07
+   ],
+   "rough": 0.08,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "hessian": {
+   "tex": "hessian_230",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.95,
+   "metal": 0.0,
+   "tint": [
+    0.72,
+    0.6,
+    0.44
+   ],
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "iron": {
+   "tex": "metal_plate",
+   "color": [
+    0.06,
+    0.06,
+    0.06
+   ],
+   "rough": 0.6,
+   "metal": 0.7,
+   "tint": [
+    0.07,
+    0.068,
+    0.065
+   ],
+   "normal": 0.4,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "label": {
+   "tex": "",
+   "color": [
+    0.56,
+    0.53,
+    0.45
+   ],
+   "rough": 0.9,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "leather": {
+   "tex": "leather_white",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.5,
+   "metal": 0.0,
+   "tint": [
+    0.09,
+    0.2,
+    0.13
+   ],
+   "normal": 0.8,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "linen": {
+   "tex": "rough_linen",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.95,
+   "metal": 0.0,
+   "tint": [
+    0.72,
+    0.69,
+    0.6
+   ],
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "meter": {
+   "tex": "",
+   "color": [
+    0.78,
+    0.72,
+    0.56
+   ],
+   "rough": 0.3,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "moulding": {
+   "tex": "dark_wood",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.5,
+   "metal": 0.0,
+   "tint": [
+    0.5,
+    0.4,
+    0.32
+   ],
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "opal": {
+   "tex": "",
+   "color": [
+    0.95,
+    0.9,
+    0.8
+   ],
+   "rough": 0.4,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": [
+    1.0,
+    0.86,
+    0.62
+   ],
+   "emission_strength": 4.0,
+   "alpha": 1.0
+  },
+  "ordner_black": {
+   "tex": "",
+   "color": [
+    0.03,
+    0.03,
+    0.034
+   ],
+   "rough": 0.6,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "ordner_blue": {
+   "tex": "Cardboard004",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.7,
+   "metal": 0.0,
+   "tint": [
+    0.1,
+    0.14,
+    0.3
+   ],
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "ordner_green": {
+   "tex": "Cardboard004",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.7,
+   "metal": 0.0,
+   "tint": [
+    0.1,
+    0.2,
+    0.13
+   ],
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "ordner_grey": {
+   "tex": "Cardboard004",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.7,
+   "metal": 0.0,
+   "tint": [
+    0.3,
+    0.31,
+    0.32
+   ],
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "packtape": {
+   "tex": "",
+   "color": [
+    0.5,
+    0.38,
+    0.22
+   ],
+   "rough": 0.35,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "paint": {
+   "tex": "",
+   "color": [
+    0.4,
+    0.38,
+    0.31
+   ],
+   "rough": 0.4,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "panel": {
+   "tex": "walnut_veneer",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.5,
+   "metal": 0.0,
+   "tint": [
+    0.62,
+    0.5,
+    0.4
+   ],
+   "normal": 0.6,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "paper": {
+   "tex": "",
+   "color": [
+    0.86,
+    0.83,
+    0.74
+   ],
+   "rough": 0.9,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "plaster": {
+   "tex": "clean_plaster",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.9,
+   "metal": 0.0,
+   "tint": [
+    0.9,
+    0.84,
+    0.7
+   ],
+   "normal": 0.7,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "plastic": {
+   "tex": "",
+   "color": [
+    0.62,
+    0.58,
+    0.49
+   ],
+   "rough": 0.42,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "rubber": {
+   "tex": "",
+   "color": [
+    0.02,
+    0.02,
+    0.02
+   ],
+   "rough": 0.8,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "steel": {
+   "tex": "metal_plate",
+   "color": [
+    0.32,
+    0.33,
+    0.33
+   ],
+   "rough": 0.5,
+   "metal": 0.35,
+   "tint": [
+    0.36,
+    0.37,
+    0.37
+   ],
+   "normal": 0.2,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "table": {
+   "tex": "walnut_veneer",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.32,
+   "metal": 0.0,
+   "tint": [
+    0.42,
+    0.29,
+    0.21
+   ],
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "tape": {
+   "tex": "",
+   "color": [
+    0.07,
+    0.045,
+    0.03
+   ],
+   "rough": 0.35,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "tapebox_blue": {
+   "tex": "",
+   "color": [
+    0.08,
+    0.13,
+    0.24
+   ],
+   "rough": 0.55,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "tapebox_cream": {
+   "tex": "",
+   "color": [
+    0.62,
+    0.58,
+    0.48
+   ],
+   "rough": 0.6,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "tapebox_red": {
+   "tex": "",
+   "color": [
+    0.32,
+    0.06,
+    0.04
+   ],
+   "rough": 0.55,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "void": {
+   "tex": "",
+   "color": [
+    0.005,
+    0.005,
+    0.005
+   ],
+   "rough": 1.0,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "wicker": {
+   "tex": "",
+   "color": [
+    0.4,
+    0.28,
+    0.15
+   ],
+   "rough": 0.75,
+   "metal": 0.0,
+   "tint": null,
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  },
+  "wool": {
+   "tex": "poly_wool_herringbone",
+   "color": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "rough": 0.95,
+   "metal": 0.0,
+   "tint": [
+    0.11,
+    0.105,
+    0.1
+   ],
+   "normal": 1.0,
+   "rough_scale": 1.0,
+   "emission": null,
+   "emission_strength": 0.0,
+   "alpha": 1.0
+  }
+ }
+}

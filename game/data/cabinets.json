@@ -1,0 +1,177 @@
+{
+ "voortekenen": {
+  "id": 1,
+  "title": "Voortekenen",
+  "roman": "I",
+  "types": [
+   {
+    "code": "0481",
+    "title": "Met de helm geboren: de lijkstoet gezien"
+   },
+   {
+    "code": "0486",
+    "title": "Gerucht in huis als voorbode van de dood"
+   },
+   {
+    "code": "0487",
+    "title": "Licht en vuur als voorbode"
+   },
+   {
+    "code": "0491",
+    "title": "De brand vooruit gezien"
+   },
+   {
+    "code": "0492",
+    "title": "Trein en vaart voorzien"
+   },
+   {
+    "code": "0061",
+    "title": "Getimmer in de nacht"
+   },
+   {
+    "code": "0483",
+    "title": "Het eigen einde gezien"
+   },
+   {
+    "code": "0489",
+    "title": "Wie de dood kan aanzeggen"
+   }
+  ]
+ },
+ "wittewieven": {
+  "id": 2,
+  "title": "Witte wieven",
+  "roman": "II",
+  "types": [
+   {
+    "code": "0310",
+    "title": "Witte wieven: waar zij dansen en dwalen"
+   },
+   {
+    "code": "0311",
+    "title": "De witte juffer die geen rust vindt"
+   },
+   {
+    "code": "0301",
+    "title": "De witte vrouw wijst de schat"
+   },
+   {
+    "code": "0161",
+    "title": "Achtervolgd door witte vrouwen"
+   }
+  ]
+ },
+ "weerwolven": {
+  "id": 3,
+  "title": "Weerwolven",
+  "roman": "III",
+  "types": [
+   {
+    "code": "0801",
+    "title": "De weerwolf springt op de rug"
+   },
+   {
+    "code": "0803",
+    "title": "Riem, hoepel en gedaanteverwisseling"
+   },
+   {
+    "code": "0804",
+    "title": "De weerwolf in andere gedaante"
+   },
+   {
+    "code": "0805",
+    "title": "De weerwolf loopt mee tot de deur"
+   },
+   {
+    "code": "0822",
+    "title": "Verwond en daardoor herkend"
+   },
+   {
+    "code": "0823",
+    "title": "Het meisje, de schort en de zakdoek"
+   },
+   {
+    "code": "0824",
+    "title": "Het wolfsvel en de holle boom"
+   }
+  ]
+ },
+ "spoken": {
+  "id": 4,
+  "title": "Spoken",
+  "roman": "IV",
+  "types": [
+   {
+    "code": "0450",
+    "title": "Wie na de dood geen rust vindt"
+   },
+   {
+    "code": "0402",
+    "title": "De dode en de belofte"
+   },
+   {
+    "code": "0404",
+    "title": "De grenssteenverlegger"
+   },
+   {
+    "code": "0333",
+    "title": "Spokerij bij brug, hek en boerderij"
+   },
+   {
+    "code": "0401",
+    "title": "Het spookhuis en het verborgen geld"
+   },
+   {
+    "code": "0456",
+    "title": "Het huis waar het spookt"
+   },
+   {
+    "code": "0477",
+    "title": "De schim van de dode"
+   },
+   {
+    "code": "0478",
+    "title": "Plaatsen waar het niet pluis is"
+   }
+  ]
+ },
+ "duivel": {
+  "id": 5,
+  "title": "De duivel",
+  "roman": "V",
+  "types": [
+   {
+    "code": "0685",
+    "title": "Klaverboer haalt de fles"
+   },
+   {
+    "code": "0904",
+    "title": "De vreemde kaartspeler"
+   },
+   {
+    "code": "0881",
+    "title": "De verkochte ziel"
+   },
+   {
+    "code": "0882",
+    "title": "De wisseldaalder van de kruisweg"
+   },
+   {
+    "code": "0883",
+    "title": "De zwarte hond"
+   },
+   {
+    "code": "0917",
+    "title": "Wie spot, wordt gestraft"
+   },
+   {
+    "code": "0945",
+    "title": "Door de duivel weggesmeten"
+   },
+   {
+    "code": "0893",
+    "title": "De duivel op het dansfeest"
+   }
+  ]
+ }
+}

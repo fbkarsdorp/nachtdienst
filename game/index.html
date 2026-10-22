@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nachtdienst</title>
+<meta name="description" content="Je eerste week op het Centraal Sagenarchief. Twaalf enveloppen invoegen. Kast vijf blijft dicht.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Homemade+Apple&family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect x=%224%22 y=%228%22 width=%2224%22 height=%2216%22 fill=%22%23ece3cf%22/%3E%3Cpath d=%22M4 12h24%22 stroke=%22%23a5281f%22/%3E%3C/svg%3E">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<canvas id="scene"></canvas>
+
+<!-- Title card -->
+<section id="title" class="screen">
+  <div class="title-card">
+    <div class="tc-head">
+      <span class="tc-rec" id="tc-archive">ARCHIEF</span>
+      <span class="tc-code">VB 1983</span>
+    </div>
+    <h1>Nachtdienst</h1>
+    <p class="tc-date" id="tc-date"></p>
+    <p class="tc-intro" id="tc-intro"></p>
+    <label class="tc-name">Naam van de assistent: <input id="tc-name" maxlength="32" autocomplete="off" spellcheck="false" placeholder="je naam"></label>
+    <div class="tc-actions">
+      <button id="btn-enter" class="paper-btn" disabled>Laden…</button>
+      <button id="btn-resume" class="paper-btn ghost" hidden>Verder waar je was</button>
+    </div>
+    <div class="tc-foot">
+      <span>Slepen: rondkijken · W A S D of klik op de vloer: lopen · Esc: terug. Koptelefoon aanbevolen.</span>
+      <a href="#" id="btn-newseed">Een ander archief</a>
+    </div>
+  </div>
+</section>
+
+<!-- In-room UI -->
+<div id="hud" hidden>
+  <nav id="nav">
+    <button data-go="cabinets">Kasten</button>
+    <button data-go="table">Tafel</button>
+    <button data-go="typewriter">Typemachine</button>
+    <button data-go="map">Wandkaart</button>
+    <button data-go="window">Raam</button>
+    <button data-go="door">Deur</button>
+  </nav>
+  <button id="btn-back" class="tab" hidden>&larr; terug</button>
+  <button id="btn-hint" class="tab pencil" title="Een aantekening van J.J.V. in de kantlijn">
+    <span class="pencil-ico">&#9998;</span><span id="hint-label">Vraag J.J.V.</span>
+  </button>
+  <div id="task" hidden>
+    <div class="t-row"><span class="t-head"></span><span class="t-clock" title="de klok aan de muur"></span></div>
+    <div class="t-row"><span class="t-ticks" title="opgeloste laden"></span><span class="t-letters"></span></div>
+  </div>
+  <button id="held" class="tab hand" hidden title="Terugleggen">In de hand: <em></em></button>
+  <div id="cardbar" hidden>
+    <button data-act="prev" class="tab" title="Vorige kaart (←)"><span class="ico">&lsaquo;</span><span class="lbl">vorige</span></button>
+    <button data-act="lay" class="tab" title="Op tafel leggen (Enter)"><span class="ico">&#9633;</span><span class="lbl">Op tafel</span><kbd>Enter</kbd></button>
+    <button data-act="stand" class="tab" title="Terug in de la"><span class="ico">&uarr;</span><span class="lbl">In de la</span></button>
+    <button data-act="take" class="tab" title="Meenemen"><span class="ico">&#10548;</span><span class="lbl">Meenemen</span></button>
+    <button data-act="flip" class="tab" title="Draai de kaart om (F)"><span class="ico">&#8635;</span><span class="lbl">Achterkant</span><kbd>F</kbd></button>
+    <button data-act="compare" class="tab" title="Alle kaarten naast elkaar (spatie)"><span class="ico">&#8862;</span><span class="lbl">Naast elkaar</span><kbd>spatie</kbd></button>
+    <button data-act="down" class="tab" title="Terugleggen (Esc)"><span class="ico">&darr;</span><span class="lbl">Terugleggen</span><kbd>Esc</kbd></button>
+    <button data-act="next" class="tab" title="Volgende kaart (→)"><span class="lbl">volgende</span><span class="ico">&rsaquo;</span></button>
+  </div>
+  <div id="tooltip" hidden></div>
+  <div id="subtitle" aria-live="polite"></div>
+  <div id="note" hidden></div>
+  <div id="sound-toggle"><button id="btn-sound" class="tab small" title="Geluid">geluid aan</button></div>
+</div>
+
+<!-- The last card -->
+<section id="final" class="screen" hidden>
+  <div class="final-wrap">
+    <canvas id="final-card" width="1600" height="960"></canvas>
+    <div id="final-back" hidden>
+      <h3>Gelezen</h3>
+      <ol id="final-log"></ol>
+      <p id="final-count"></p>
+    </div>
+    <p id="final-text" hidden></p>
+    <div class="final-actions">
+      <button id="btn-turn" class="paper-btn ghost">Achterkant</button>
+      <button id="btn-save-card" class="paper-btn">Bewaar de kaart</button>
+      <button id="btn-copy" class="paper-btn ghost">Kopieer als tekst</button>
+      <button id="btn-again" class="paper-btn ghost">Een ander archief</button>
+    </div>
+  </div>
+</section>
+
+<div id="fade"></div>
+<input id="keytrap" autocomplete="off" autocapitalize="off" spellcheck="false" aria-hidden="true">
+<noscript>Dit archief heeft JavaScript nodig.</noscript>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

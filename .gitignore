@@ -1,0 +1,9 @@
+# the raw dumps and what the pipeline derives from them (rebuilt by pipeline/)
+/data/
+# downloaded CC0 sources (blender/fetch_assets.py) and Cycles previews
+/blender/assets/
+/blender/preview/
+*.blend
+*.blend1
+__pycache__/
+.DS_Store
